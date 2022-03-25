@@ -1,0 +1,104 @@
+/************ data model **************/
+.type PersonType <: symbol
+.type DescriptionType <: symbol
+
+.decl person(name:PersonType, description:DescriptionType)
+.input person(filename="DATA/person.facts")
+
+.decl female(name:PersonType)
+.input female(filename="DATA/female.facts")
+
+.decl male(name:PersonType)
+.input male(filename="DATA/male.facts")
+
+.decl parent_child(p1:PersonType, p2:PersonType)
+.input parent_child(filename="DATA/parent_child.facts")
+
+.decl person_living(p:PersonType)
+.input person_living(filename="DATA/person_living.facts")
+
+/************* problem 0 **************/
+/**** Find all children of Priscilla ****/
+.decl p0(x:PersonType, d:DescriptionType)
+// NOTE: if you want to redirect the output to a file
+// you can use the syntax:
+// .output p0(filename="hw7-q0.ans")
+.output p0(IO=stdout)
+p0(x,d) :- parent_child("Priscilla",x), person(x,d).
+
+/************* Copy this file to the submission directory          **************/
+/************* then write your solutions to questions 1 - 5 below  **************/
+
+/* Question 1 */
+.decl p1(x: PersonType, d: DescriptionType)
+
+// Initially compute all of Priscilla's children.
+p1(child, desc) :- parent_child("Priscilla", child), person(child, desc).
+
+// Recursively compute all of Priscilla's descendants.
+p1(descendant, desc) :- p1(child, _), parent_child(child, descendant), person(descendant, desc).
+
+.output p1(filename = "hw7-q1.ans")
+
+
+/* Question 2 */
+.decl p2(x: PersonType, d: DescriptionType, n: number)
+.decl female_counts(x: PersonType, n: number)
+.decl male_counts(x: PersonType, n: number)
+
+// Ladies first 🤓! Compute children counts for females.
+female_counts(x, n) :- female(x), n = count : parent_child(x, _).
+
+// Compute children counts for males.
+male_counts(x, n) :- male(x), n = count : parent_child(x, _).
+
+// Ladies first 🤓! Compute female with most children.
+p2(x, d, n) :- person(x, d), female_counts(x, n), n = max c : female_counts(_, c).
+
+// Add male with most children to output.
+p2(x, d, n) :- person(x, d), male_counts(x, n), n = max c : male_counts(_, c).
+    
+.output p2(filename = "hw7-q2.ans")
+
+
+/* Question 3 */
+.decl p3(x: PersonType, m1: number, m2: number)
+.decl generations(x: PersonType, g: number)
+
+// Initially compute all people in generation 0 (anyone with no parents).
+generations(og, 0) :- person(og, _), !parent_child(_, og).
+
+// Recursively compute all generations for everyone else.
+generations(c, g) :- generations(p, gg), parent_child(p, c), g = gg + 1.
+
+// Compute the minimum and maximum generation for each living person.
+p3(x, m1, m2) :- person_living(x), m1 = min g : generations(x, g), m2 = max g : generations(x, g).
+
+.output p3(filename = "hw7-q3.ans")
+
+
+/* Question 4 */
+.decl p4(x: PersonType)
+.decl ancestors_of_living(a: PersonType, d: PersonType)
+
+// Compute all female ancestors of living people.
+ancestors_of_living(p, c) :- person_living(c), female(p), parent_child(p, c).
+ancestors_of_living(a, d) :- ancestors_of_living(p, d), female(a), parent_child(a, p).
+
+// Compute all matrilineal common ancestors.
+p4(x) :- ancestors_of_living(x, _), count : ancestors_of_living(x, _) = count : person_living(_).
+
+.output p4(filename = "hw7-q4.ans")
+
+
+/* Question 5 */
+.decl p5(x: PersonType)
+.decl mca_generations(mca: PersonType, g: number)
+
+// Compute the max generation for all MCAs.
+mca_generations(mca, g) :- p4(mca), g = max g : generations(mca, g).
+
+// Compute the mitochondrial Eve (MCA with the largest generation).
+p5(x) :- mca_generations(x, m), m = max g : mca_generations(_, g).
+
+.output p5(filename = "hw7-q5.ans")
