@@ -1,0 +1,14 @@
+# Verifies that searching while including indirect flights will only include direct flights
+# if there are more than numberOfItineraries direct flights, even if there is a shorter indirect flight.
+# In other words, verifies that direct flights are prioritized as search results over indirect flights.
+search "Seattle WA" "Boston MA" 1 1 1
+quit
+*
+#
+# expected printouts for user 1 - should not include indirect flight with FIDs 1034748 and 1035037 which is actually 
+# faster than all direct flights from Seattle to Boston (for whatever reason) 
+#
+Itinerary 0: 1 flight(s), 297 minutes
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Goodbye
+*

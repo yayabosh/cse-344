@@ -1,0 +1,76 @@
+# One terminal books a flight, the other terminal checks the user's reservations. Many possible interleavings
+# can occur here.
+#
+# user1 books flight
+create user1 user1 100000
+login user1 user1
+search "Seattle WA" "Boston MA" 1 1 1
+book 0
+quit
+*
+#
+# expected printouts for user 1
+# scenario 1: terminal 1 creates user and books flight successfully
+Created user user1
+Logged in as user1
+Itinerary 0: 1 flight(s), 297 minutes
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Booked flight(s), reservation ID: 1
+Goodbye
+|
+# scenario 2: terminal 1 fails to create user and books flight successfully
+Failed to create user
+Logged in as user1
+Itinerary 0: 1 flight(s), 297 minutes
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Booked flight(s), reservation ID: 1
+Goodbye
+|
+# scenario 3: terminal 2 does not see reservation and did not create user
+Created user user1
+Logged in as user1
+Itinerary 0: 1 flight(s), 297 minutes
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Booked flight(s), reservation ID: 1
+Goodbye
+|
+# scenario 4: terminal 2 does not see reservation but did create user
+Failed to create user
+Logged in as user1
+Itinerary 0: 1 flight(s), 297 minutes
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Booked flight(s), reservation ID: 1
+Goodbye
+*
+# other terminal checks reservations
+create user1 user1 100000
+login user1 user1
+reservations
+quit
+*
+# scenario 1: terminal 2 sees reservation, but did not create user
+Failed to create user
+Logged in as user1
+Reservation 1 paid: false:
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Goodbye
+|
+# scenario 2: terminal 2 sees reservation, and did create user
+Created user user1
+Logged in as user1
+Reservation 1 paid: false:
+ID: 60454 Day: 1 Carrier: AS Number: 24 Origin: Seattle WA Dest: Boston MA Duration: 297 Capacity: 14 Price: 140
+Goodbye
+|
+# scenario 3: terminal 2 does not see reservation and did not create user
+Failed to create user
+Logged in as user1
+No reservations found
+Goodbye
+|
+# scenario 4: terminal 2 does not see reservation but did create user
+Created user user1
+Logged in as user1
+No reservations found
+Goodbye
+*

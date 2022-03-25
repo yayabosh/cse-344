@@ -1,0 +1,11 @@
+#
+# create two users with the same username
+create user1 user1 100
+create user1 user1 100
+quit
+*
+#
+Created user user1
+Failed to create user
+Goodbye
+*

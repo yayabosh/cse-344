@@ -1,0 +1,13 @@
+# Creates a user User1 and logs them in with username USER1
+#
+create User1 user1 10
+login USER1 user1
+quit
+*
+#
+# expected printouts for user 1
+#
+Created user user1
+Logged in as user1
+Goodbye
+*

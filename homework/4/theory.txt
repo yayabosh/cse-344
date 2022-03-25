@@ -1,0 +1,32 @@
+A. R(A, B, C, D, E), D -> B, CE -> A
+
+Decompose R with D -> B:
+R1(D, B)        - in BCNF
+R2(A, C, E, D)  - not in BCNF
+
+Decompose R2 with CE -> A:
+R3(C, E, A)  - in BCNF
+R4(C, E, D)  - in BCNF
+
+Final relations: R1(D (key), B), R3(C (key), E (key), A), R4(C, E, D).
+
+
+B. S(A, B, C, D, E), A -> E, BC -> A, DE -> B
+
+Decompose R into DE -> B:
+R1(D, E, B)     - in BCNF
+R2(A, C, D, E)  - not in BCNF
+
+Decompose R2 with A -> E:
+R3(A, E)     - in BCNF
+R4(A, C, D)  - in BCNF
+
+Final relations: R1(D (key), E (key), B), R3(A (key), E), R4(A, C, D).
+
+
+C. Empty set of functional dependencies. With no functional dependencies, every subset of R
+will solely determine itself and no other attributes, the definition of a closed set of attributes.
+
+D. {A -> B, B -> C, C -> D, D -> A}
+
+E. {B -> C, C -> B, A -> BCD, D -> ABC}

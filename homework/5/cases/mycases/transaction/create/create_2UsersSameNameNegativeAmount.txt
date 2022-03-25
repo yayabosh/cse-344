@@ -1,0 +1,20 @@
+# Tests 2 terminals trying to create an account with the same username, but one has a negative initial amount.
+# Terminal with negative initial amount should fail, other should succeed.
+#
+# Terminal 1
+create user pwd1 -100
+quit
+*
+# expected result for Terminal 1
+# scenario 1: Terminal 1 fails, Terminal 2 succeeds
+Failed to create user
+Goodbye
+*
+# Terminal 2
+create user pwd2 100
+quit
+*
+# scenario 1: Terminal 1 fails, Terminal 2 succeeds
+Created user user
+Goodbye
+*

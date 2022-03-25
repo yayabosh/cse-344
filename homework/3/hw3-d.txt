@@ -1,0 +1,11 @@
+It was pretty cool that we could use a cloud hosted DBMS.
+But we only got to see the query editor, which was cool and all
+but was essentially the same thing as we did in hw2 so the change
+in workspace wasn't really noticed by me. However, if working with a
+really large database, I would definitely recommend it for students.
+If working on a smaller database, I think SQLite gets the job done
+perfectly!
+
+I think if we get to use Azure in future projects I'd definitely 
+like it though, the experience we get from working with a large scale
+database that is used in the industry is super cool.

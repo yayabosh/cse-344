@@ -1,0 +1,19 @@
+stages:
+  - milestone1
+  - milestone2
+  
+milestone1_test:
+  stage: milestone1
+  script:
+    - /opt/courses/cse344/ci_env/sh_script/ci_hw5-ms1.sh
+  tags:
+    - cse344-shell
+  
+# Comment out the following lines if you don't want to run milestone2 yet
+
+milestone2_test:
+  stage: milestone2
+  script:
+    - /opt/courses/cse344/ci_env/sh_script/ci_hw5-ms2.sh
+  tags:
+  - cse344-shell
